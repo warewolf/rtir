@@ -235,11 +235,11 @@
       <table border="0">
         <tr>
         <td align="right"><&|/l&>Starts</&>:</td>
-          <td><input size="10" name="Starts" value="<% $ARGS{Starts} || '' %>" /></td>
+          <td ><& /Elements/SelectDate, Name => 'Starts', Default => $ARGS{Starts}||'' &> 
         </tr>
         <tr>
         <td align="right"><&|/l&>Due</&>:</td>
-        <td><input size="10" name="Due" value="<% $ARGS{Due} || '' %>" /></td>
+          <td ><& /Elements/SelectDate, Name => 'Due', Default => $ARGS{Due}||'' &> 
         </tr>
       </table>
     </&>
