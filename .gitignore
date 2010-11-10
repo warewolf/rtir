@@ -5,3 +5,5 @@ blib/
 pm_to_blib
 t/tmp
 *.swp
+*.swo
+.prove
