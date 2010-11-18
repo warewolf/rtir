@@ -1,0 +1,33 @@
+<form action="Lookup.html" method="get">
+  <input type="hidden" name="ticket" value="<% $ticket %>" />
+  <tr>
+    <td class="label">WHOIS:</td>
+    <td class="input">
+      <input size="30" name="q" value="<% $q %>" /> at 
+      <select name="server">
+<%PERL>
+foreach my $s ( sort grep $servers->{ $_ }, keys %{ $servers } ) {
+    my $srv = $servers->{ $s };
+    my ($host, $name) = ref $srv?
+        ($srv->{'Host'}, $srv->{'FriendlyName'}):
+        ($srv, '');
+
+    my $selected = '';
+    $selected = "selected" if $host eq $server;
+</%PERL>
+        <option value="<% $host %>" <% $selected %>><% $name || $host %></option>
+% }
+      </select>
+    </td>
+    <td align="left"><input type="submit" value="Go" /></td>
+  </tr>
+</form>
+
+<%args>
+$server => undef
+$ticket => undef
+$q => undef
+</%args>
+<%init>
+my $servers   = RT->Config->Get('whois');
+</%init>

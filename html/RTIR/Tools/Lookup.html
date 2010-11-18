@@ -97,30 +97,7 @@
 <h2><&|/l&>Look Up Information</&></h2>
 
 <table>
-<form action="Lookup.html" method="get">
-  <input type="hidden" name="ticket" value="<% $ticket %>" />
-  <tr>
-    <td class="label">WHOIS:</td>
-    <td class="input">
-      <input size="30" name="q" value="<% $q %>" /> at 
-      <select name="server">
-<%PERL>
-foreach my $s ( sort grep $servers->{ $_ }, keys %{ $servers } ) {
-    my $srv = $servers->{ $s };
-    my ($host, $name) = ref $srv?
-        ($srv->{'Host'}, $srv->{'FriendlyName'}):
-        ($srv, '');
-
-    my $selected = '';
-    $selected = "selected" if $host eq $server;
-</%PERL>
-        <option value="<% $host %>" <% $selected %>><% $name || $host %></option>
-% }
-      </select>
-    </td>
-    <td align="left"><input type="submit" value="Go" /></td>
-  </tr>
-</form>
+    <& Elements/WHOISForm, ticket => $ticket, q => $q, server => $server, servers => $servers &>
 
 <form action="Traceroute.html" method="get" target="_blank">
   <tr>
@@ -211,6 +188,7 @@ if ( $ARGS{'InvestigateTo'} ) {
     );
 }
 
+my $servers   = RT->Config->Get('whois');
 unless ( $server ) {
     # just pick the first one
     ($server) = map ref $servers->{$_}? $servers->{$_}->{'Host'}: $servers->{$_},
@@ -274,7 +252,6 @@ my $Format = RT->Config->Get('RTIRSearchResultFormats')->{$TicketType . 'Default
 
 </%INIT>
 <%ARGS>
-$servers   => RT->Config->Get('whois')
 $server    => undef
 $handparse => 1
 $q         => undef
